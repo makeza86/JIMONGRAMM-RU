@@ -486,6 +486,14 @@
             <input class="form-input" id="m-name" placeholder="Ваше имя">
           </div>
           <div class="form-field">
+            <label class="form-label" for="m-country">Страна</label>
+            <input class="form-input" id="m-country" placeholder="Казахстан">
+          </div>
+          <div class="form-field">
+            <label class="form-label" for="m-city">Город</label>
+            <input class="form-input" id="m-city" placeholder="Алматы">
+          </div>
+          <div class="form-field">
             <label class="form-label" for="m-phone-code">Код страны</label>
             <select class="form-input" id="m-phone-code">
               <option value="+7">🇷🇺 +7</option>
@@ -551,6 +559,14 @@
         <div class="form-field full">
           <label class="form-label" for="mm-name">Имя</label>
           <input class="form-input" id="mm-name" placeholder="Ваше имя">
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="mm-country">Страна</label>
+          <input class="form-input" id="mm-country" placeholder="Казахстан">
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="mm-city">Город</label>
+          <input class="form-input" id="mm-city" placeholder="Алматы">
         </div>
         <div class="form-field">
           <label class="form-label" for="mm-phone-code">Код страны</label>
@@ -678,18 +694,20 @@ async function sendLead(data){
 async function submitModalLead(){
   const status = document.getElementById('mm-status').value;
   const name = document.getElementById('mm-name').value.trim();
+  const country = document.getElementById('mm-country').value.trim();
+  const city = document.getElementById('mm-city').value.trim();
   const phoneCode = document.getElementById('mm-phone-code').value.replace('kz','');
   const phone = document.getElementById('mm-phone').value.trim();
   const method = document.getElementById('mm-method').value;
 
-  if(!status || !name || !phone){ alert('Пожалуйста, заполните все поля.'); return; }
+  if(!status || !name || !country || !phone){ alert('Пожалуйста, заполните все поля.'); return; }
 
   const btn = document.querySelector('#modalFormView .form-submit');
   btn.textContent = 'Отправляем...'; btn.disabled = true;
 
   await sendLead({
     name, contact: phoneCode + ' ' + phone, contactMethod: method,
-    country: '', city: '',
+    country, city,
     source: CONFIG.leadSource + ' — ' + modalContextLabel + ' — ' + status
   });
 
@@ -701,18 +719,20 @@ async function submitModalLead(){
 async function submitLead(){
   const status = document.getElementById('m-status').value;
   const name = document.getElementById('m-name').value.trim();
+  const country = document.getElementById('m-country').value.trim();
+  const city = document.getElementById('m-city').value.trim();
   const phoneCode = document.getElementById('m-phone-code').value.replace('kz','');
   const phone = document.getElementById('m-phone').value.trim();
   const method = document.getElementById('m-method').value;
 
-  if(!status || !name || !phone){ alert('Пожалуйста, заполните все поля.'); return; }
+  if(!status || !name || !country || !phone){ alert('Пожалуйста, заполните все поля.'); return; }
 
   const btn = document.querySelector('#inlineFormView .form-submit');
   btn.textContent = 'Отправляем...'; btn.disabled = true;
 
   await sendLead({
     name, contact: phoneCode + ' ' + phone, contactMethod: method,
-    country: '', city: '',
+    country, city,
     source: CONFIG.leadSource + ' — Инлайн-форма — ' + status
   });
 
