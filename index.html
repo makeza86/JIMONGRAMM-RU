@@ -81,6 +81,30 @@
   .nav-cta:hover{filter:brightness(1.04); transform:translateY(-1px);}
   .nav-link{color:var(--green-deep); text-decoration:none; font-weight:600; font-size:0.92rem; opacity:0.85; transition:opacity .2s;}
   .nav-link:hover{opacity:1; color:var(--gold-deep);}
+  .nav-links-group{display:flex; align-items:center; gap:24px;}
+  .nav-right{display:flex; align-items:center; gap:10px;}
+  .nav-burger{display:none; flex-direction:column; justify-content:center; gap:5px; width:36px; height:36px; background:none; border:none; cursor:pointer; padding:0; flex-shrink:0;}
+  .nav-burger span{display:block; width:22px; height:2px; background:var(--green-deep); border-radius:2px; transition:transform .25s, opacity .25s;}
+  .nav-burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  .nav-burger.open span:nth-child(2){opacity:0;}
+  .nav-burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+  @media(max-width:760px){
+    nav{padding:0 16px;}
+    .nav-logo-text{font-size:0.95rem;}
+    .nav-cta{padding:8px 14px; font-size:0.78rem;}
+    .nav-burger{display:flex;}
+    .nav-links-group{
+      position:fixed; top:68px; left:0; right:0;
+      flex-direction:column; align-items:stretch; gap:0;
+      background:rgba(250,246,236,0.98); backdrop-filter:blur(18px);
+      border-bottom:1px solid var(--border);
+      max-height:0; overflow:hidden; transition:max-height .3s ease;
+    }
+    .nav-links-group.open{max-height:340px;}
+    .nav-links-group a{padding:14px 24px; width:100%; border-bottom:1px solid rgba(22,50,31,0.08); font-size:1rem; opacity:1;}
+  }
+
 
   section{padding:90px 24px; position:relative;}
   .container{max-width:1140px; margin:0 auto;}
@@ -135,11 +159,18 @@
     <div class="nav-logo-badge">鹏</div>
     <div class="nav-logo-text">JimonGramm</div>
   </a>
-  <a href="#lead" class="nav-cta" onclick="openLeadModal('Nav')">Подключиться →</a>
-  <a href="/o-kompanii.html" class="nav-link">О компании</a>
-<a href="/partnerstvo.html" class="nav-link">Партнёрство</a>
-<a href="/tehnologiya-peng.html" class="nav-link">Технология</a>
-<a href="/privacy.html" class="nav-link">Политика конфиденциальности</a>
+  <div class="nav-links-group" id="navLinksGroup">
+    <a href="/o-kompanii.html" class="nav-link" onclick="closeMobileMenu()">О компании</a>
+    <a href="/partnerstvo.html" class="nav-link" onclick="closeMobileMenu()">Партнёрство</a>
+    <a href="/tehnologiya-peng.html" class="nav-link" onclick="closeMobileMenu()">Технология</a>
+    <a href="/privacy.html" class="nav-link" onclick="closeMobileMenu()">Политика конфиденциальности</a>
+  </div>
+  <div class="nav-right">
+    <a href="#lead" class="nav-cta" onclick="openLeadModal('Nav')">Подключиться →</a>
+    <button type="button" class="nav-burger" id="navBurger" onclick="toggleMobileMenu()" aria-label="Открыть меню">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
 </nav>
 
 <!-- HERO -->
@@ -602,6 +633,14 @@ document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 /* ===== МОДАЛЬНОЕ ОКНО ===== */
 let modalContextLabel = 'Не указан';
 let openedViaModalParam = false;
+function toggleMobileMenu(){
+  document.getElementById('navLinksGroup').classList.toggle('open');
+  document.getElementById('navBurger').classList.toggle('open');
+}
+function closeMobileMenu(){
+  document.getElementById('navLinksGroup').classList.remove('open');
+  document.getElementById('navBurger').classList.remove('open');
+}
 function openLeadModal(contextLabel){
   modalContextLabel = contextLabel || 'Не указан';
   document.getElementById('modalContextTag').textContent = 'Заявка · ' + modalContextLabel;
